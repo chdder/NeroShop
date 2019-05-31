@@ -8,6 +8,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,9 +37,9 @@ public class ImageUtil {
                 .outputQuality(0.8f).toFile(basePath + "/picture/press_saber.jpg");
     }
 
-    public static String generateThumbnail(File thumbnail, String targetAddr) {
+    public static String generateThumbnail(InputStream thumbnail, String fileName, String targetAddr) {
         String realFileName = getRandomFileName();
-        String extension = getFileExtension(thumbnail);
+        String extension = getFileExtension(fileName);
         makeDirPath(targetAddr);
         String relativeAddr = targetAddr + realFileName + extension;
         File destination = new File(PathUtil.getImgBasePath() + relativeAddr);
@@ -53,9 +54,9 @@ public class ImageUtil {
         return relativeAddr;
     }
 
-    public static String generateNormalImg(File thumbnail, String targetAddr) {
+    public static String generateNormalImg(File thumbnail, String fileName, String targetAddr) {
         String realFileName = getRandomFileName();
-        String extension = getFileExtension(thumbnail);
+        String extension = getFileExtension(fileName);
         makeDirPath(targetAddr);
         String relativeAddr = targetAddr + realFileName + extension;
         File dest = new File(PathUtil.getImgBasePath() + relativeAddr);
@@ -67,12 +68,12 @@ public class ImageUtil {
         return relativeAddr;
     }
 
-    public static List<String> generateNormalImgs(List<File> imgs, String targetAddr) {
+    public static List<String> generateNormalImgs(List<String> imgs, String targetAddr) {
         int count = 0;
         List<String> relativeAddrList = new ArrayList<String>();
         if (imgs != null && imgs.size() > 0) {
             makeDirPath(targetAddr);
-            for (File img : imgs) {
+            for (String img : imgs) {
                 String realFileName = getRandomFileName();
                 String extension = getFileExtension(img);
                 String relativeAddr = targetAddr + realFileName + count + extension;
@@ -103,12 +104,11 @@ public class ImageUtil {
     /**
      * 获取输入文件名流的扩展名
      *
-     * @param cFile
+     * @param fileName
      * @return
      */
-    private static String getFileExtension(File cFile) {
-        String originalFileName = cFile.getName();
-        return originalFileName.substring((originalFileName.lastIndexOf(".")));
+    private static String getFileExtension(String fileName) {
+        return fileName.substring((fileName.lastIndexOf(".")));
     }
 
     /**

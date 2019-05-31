@@ -15,8 +15,7 @@ import javax.imageio.ImageIO;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 
 /**
@@ -41,16 +40,22 @@ public class ShopServiceTest extends BaseTest {
         shop.setOwner(owner);
         shop.setArea(area);
         shop.setShopCategory(shopCategory);
-        shop.setShopName("测试店铺10");
-        shop.setShopDesc("测试10");
-        shop.setShopAddr("测试10");
-        shop.setPhone("test10");
+        shop.setShopName("测试店铺11");
+        shop.setShopDesc("测试11");
+        shop.setShopAddr("测试11");
+        shop.setPhone("test11");
         shop.setCreateTime(new Date());
         shop.setEnableStatus(ShopStateEnum.CHECK.getState());
         shop.setAdvice("审核中");
 
         File file = new File("D:/Picture/saber.jpg");
-        ShopExecution shopExecution = shopService.addShop(shop, file);
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ShopExecution shopExecution = shopService.addShop(shop, inputStream, file.getName());
         assertEquals(ShopStateEnum.CHECK.getState(), shopExecution.getState());
     }
 
