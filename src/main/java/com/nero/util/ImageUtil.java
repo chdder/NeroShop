@@ -123,4 +123,22 @@ public class ImageUtil {
         return nowTimeStr + rannum;
     }
 
+    /**
+     * storePath是文件的路径或者目录路径，如果storePath是文件则删除文件
+     * 如果storePath是目录则删除该目录下所有文件以及该目录
+     * @param storePath
+     */
+    public static void deleteFileOrPath(String storePath) {
+        File fileOrPath = new File(PathUtil.getImgBasePath() + storePath);
+        if (fileOrPath.exists()) {
+            if (fileOrPath.isDirectory()) {
+                File files[] = fileOrPath.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    files[i].delete();
+                }
+            }
+        }
+        fileOrPath.delete();
+    }
+
 }

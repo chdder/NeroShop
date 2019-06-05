@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.*;
 import java.util.Date;
+import java.util.PrimitiveIterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,10 +41,10 @@ public class ShopServiceTest extends BaseTest {
         shop.setOwner(owner);
         shop.setArea(area);
         shop.setShopCategory(shopCategory);
-        shop.setShopName("测试店铺11");
-        shop.setShopDesc("测试11");
-        shop.setShopAddr("测试11");
-        shop.setPhone("test11");
+        shop.setShopName("测试店铺读写分离");
+        shop.setShopDesc("测试读写分离");
+        shop.setShopAddr("测试读写分离");
+        shop.setPhone("test读写分离");
         shop.setCreateTime(new Date());
         shop.setEnableStatus(ShopStateEnum.CHECK.getState());
         shop.setAdvice("审核中");
@@ -68,5 +69,27 @@ public class ShopServiceTest extends BaseTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testModifyShop() throws FileNotFoundException{
+        Shop shop = new Shop();
+        shop.setShopId(54L);
+        shop.setShopName("测试修改商店名称");
+        File file = new File("D:/Picture/tianyi.jpg");
+        InputStream inputStream = new FileInputStream(file);
+        ShopExecution shopExecution = shopService.modifyShop(shop, inputStream, "tianyi.jpg");
+        System.out.println(shopExecution.getShop().getShopImg());
+    }
+
+    @Test
+    public void testGetShopList() {
+        PersonInfo user = new PersonInfo();
+        user.setUserId(1);
+        user.setName("test");
+        Shop shopCondition = new Shop();
+        shopCondition.setOwner(user);
+        ShopExecution shopExecution = shopService.getShopList(shopCondition, 1, 100);
+        System.out.println(shopExecution.getShopList().size());
     }
 }

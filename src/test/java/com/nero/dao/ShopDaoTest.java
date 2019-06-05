@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +23,13 @@ public class ShopDaoTest extends BaseTest {
     @Autowired
     private ShopDao shopDao;
 
+    @Test
+    public void testQueryByShopId() {
+        Long id = 1L;
+        Shop shop = shopDao.queryByShopId(id);
+        System.out.println(shop.getArea().getAreaId());
+        System.out.println(shop.getArea().getAreaName());
+    }
     @Test
     public void testInsertShop() {
         Shop shop = new Shop();
@@ -55,5 +63,15 @@ public class ShopDaoTest extends BaseTest {
         shop.setLastEditTime(new Date());
         int effectNum = shopDao.updateShop(shop);
         assertEquals(1, effectNum);
+    }
+
+    @Test
+    public void testQueryShopList() {
+        Shop shopCondition = new Shop();
+        PersonInfo owner = new PersonInfo();
+        owner.setUserId(1);
+        shopCondition.setOwner(owner);
+        List<Shop> shopList = shopDao.queryShopList(shopCondition, 0, 5);
+        System.out.println(shopList.size());
     }
 }

@@ -16,4 +16,8 @@
 		<!-- 打印查询语句 -->
 		<setting name="logImpl" value="STDOUT_LOGGING" />
 	</settings>
+	<!-- 配置读写分离的拦截器-->
+	<plugins>
+		<plugin interceptor="com.nero.dao.split.DynamicDataSourceInterceptor"></plugin>
+	</plugins>
 </configuration>
